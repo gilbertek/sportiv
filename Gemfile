@@ -8,12 +8,11 @@ gem 'haml'
 gem 'thin'
 gem 'rack'
 gem 'data_mapper'
-gem 'dm-migrations'
 gem 'dm-sqlite-adapter'
-
 
 group :development, :test do
   gem 'shotgun'
+  gem 'pry'
   gem 'pry-byebug'
   gem 'rspec'
   gem 'rack-test'

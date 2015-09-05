@@ -2,8 +2,8 @@ require 'rubygems'
 require 'bundler'
 Bundler.require(:defaults)
 
-require './app/sportiv'
-# require './app/models/models'
+require './sportiv'
+require './models/models'
 
 def config_for_env(hash)
   hash
