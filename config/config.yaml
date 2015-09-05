@@ -1,0 +1,11 @@
+defaults: &defaults
+  twitter:
+    twitter_key: "YgXGQ7FVs1n0W9Pzmfrgn0Nhq"
+    twitter_secret: "glNWdbN7Uh1AQT4wQ9MHaTEUtNe5iqgbyi0srlaM6P0ahK1AAP"
+    twitter_url: "https://api.twitter.com/1.1/"
+  facebook:
+development:
+  <<: *defaults
+test:
+  <<: *defaults
+production:
