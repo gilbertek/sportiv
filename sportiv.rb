@@ -35,9 +35,6 @@ class Sportiv < Sinatra::Base
   end
 
   get '/updates' do
-
-    binding.pry
-
     uri = URI.parse(settings.source_url)
     response = Net::HTTP.get_response(uri)
     csv = CSV.new(response.body, {
