@@ -3,7 +3,7 @@ require 'bundler'
 Bundler.require(:defaults)
 
 require './sportiv'
-require './models/models'
+require './app/models/models'
 
 def config_for_env(hash)
   hash

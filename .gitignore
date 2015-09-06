@@ -2,6 +2,7 @@
 *.sw?
 *.rbc
 *.sass-cache
+db/*.sqlite3
 config.yml
 vendor/
 .bundle

@@ -1,5 +1,9 @@
 require 'bundler/setup'
 Bundler.require
+require 'net/http'
+require 'uri'
+require 'csv'
+require 'json'
 require 'pry'
 
 class Sportiv < Sinatra::Base
@@ -32,16 +36,47 @@ class Sportiv < Sinatra::Base
 
   get '/updates' do
 
+    binding.pry
+
+    uri = URI.parse(settings.source_url)
+    response = Net::HTTP.get_response(uri)
+    csv = CSV.new(response.body, {
+      headers: :first_row,
+      header_converters: :symbol,
+      converters: [:all, :date_to_iso]
+    })
+
+    keep = [:date, :hometeam, :awayteam, :fthg, :ftag, :ftr, :hthg, :htag, :htr, :referee]
+
+    data = csv.to_a.map do
+      |row| row.to_hash.select { |k, v| keep.include?(k) }
+       Game.from_row(row)
+    end
+
+    binding.pry
+
+    # data.delete_if { |v| v[:ftr] == nil }
+
+    count = 0 #Get current count from db
+    records = data.length - count
+
+    if records > 0
+      # Push notification!
+      # remove existing row
+      # insert new row
+    end
+
+    { success: true, records: records }.to_json
   end
 
   configure do
     set :source_url, 'http://www.football-data.co.uk/mmz4281/1516/E0.csv'
 
     CSV::Converters[:date_to_iso] = lambda do |str|
-      binding.pry
       begin
         Date.strptime(str, '%d/%m/%y').strftime('%Y-%m-%d')
       rescue Exception => e
+        # Logger.debug "Exception: #{e}: #{e.backtrace}"
         str
       end
     end
