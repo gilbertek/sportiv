@@ -14,7 +14,6 @@ class GameImporter
       header_converters: :symbol,
       converters: [:all, :date_to_iso]
     }).each do |row|
-      payload = map(row)
       gm = Game.from_row(row)
       yield gm if block_given?
     end

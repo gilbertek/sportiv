@@ -34,6 +34,11 @@ class Sportiv < Sinatra::Base
     haml :'pages/index', layout: true
   end
 
+  get '/schedules' do
+    @schedules = Game.all(order: [:start_date.desc])
+    @schedules.to_json
+  end
+
   get '/updates' do
     uri = URI.parse(settings.source_url)
     response = Net::HTTP.get_response(uri)
@@ -47,23 +52,21 @@ class Sportiv < Sinatra::Base
 
     data = csv.to_a.map do
       |row| row.to_hash.select { |k, v| keep.include?(k) }
-       Game.from_row(row)
+      Game.from_row(row)
     end
-
-    binding.pry
 
     # data.delete_if { |v| v[:ftr] == nil }
 
-    count = 0 #Get current count from db
-    records = data.length - count
+    # count = 0 #Get current count from db
+    # records = data.length - count
 
-    if records > 0
+    # if records > 0
       # Push notification!
       # remove existing row
       # insert new row
-    end
+    # end
 
-    { success: true, records: records }.to_json
+    { success: true, records: data.length }.to_json
   end
 
   configure do
